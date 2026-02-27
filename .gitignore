@@ -1,5 +1,9 @@
-venv/
+
 __pycache__/
-.DS_Store
+*.pyc
+.venv/
 data/
-*.csv
+models/
+*.parquet
+.DS_Store
+.ipynb_checkpoints/

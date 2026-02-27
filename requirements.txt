@@ -1,5 +1,10 @@
-streamlit
 pandas
 numpy
+scikit-learn
+xgboost
+pyarrow
+matplotlib
+seaborn
+streamlit
 altair
 pydeck
