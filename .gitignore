@@ -11,26 +11,25 @@ env/
 *.parquet
 *.pkl
 
-
 !data/processed/chicago_clean_2015_2024.parquet
 !data/processed/chicago_clean_2025.parquet
 !data/processed/grid_metadata.parquet
 !data/processed/train_table_test_2025.parquet
 !data/processed/train_table_train_2015_2024.parquet
 
+
 !data/raw/chicago_2015_2024.parquet
 !data/raw/chicago_2025.parquet
 
-
 !models/logreg_grid.pkl
 !models/xgb_grid_pipeline.pkl
+!models/rf_grid.pkl
 
 
 !data/
 !data/raw/
 !data/processed/
 !models/
-
 
 data/raw_zips/**
 !data/raw_zips/
@@ -43,7 +42,6 @@ data/datasets/**
 !data/datasets/temporal/.gitkeep
 !data/datasets/geographic/
 !data/datasets/geographic/.gitkeep
-
 
 !data/.gitkeep
 !data/raw/.gitkeep
