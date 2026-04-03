@@ -4,9 +4,7 @@ import joblib
 import pydeck as pdk
 from pathlib import Path
 
-# =========================
-# Basic page config
-# =========================
+
 st.set_page_config(
     page_title="Predictive Policing Demo",
     layout="wide"
@@ -15,9 +13,7 @@ st.set_page_config(
 st.title("Predictive Policing – Weekly Theft Risk Demo")
 st.caption("IT5006 Phase 3 Deployment Demo")
 
-# =========================
-# Paths
-# =========================
+
 BASE_DIR = Path(__file__).resolve().parent
 
 TEST_DATA_PATH = BASE_DIR / "data" / "processed" / "train_table_test_2025.parquet"
@@ -27,9 +23,7 @@ LOGREG_PATH = BASE_DIR / "models" / "logreg_grid.pkl"
 RF_PATH = BASE_DIR / "models" / "rf_grid.pkl"
 XGB_PATH = BASE_DIR / "models" / "xgb_grid_pipeline.pkl"
 
-# =========================
-# Feature columns
-# =========================
+
 FEATURES = [
     "cell_id",
     "year",
@@ -54,9 +48,7 @@ MODEL_PATHS = {
     "XGBoost": XGB_PATH,
 }
 
-# =========================
-# Load data
-# =========================
+
 @st.cache_data
 def load_test_data(path: Path) -> pd.DataFrame:
     if not path.exists():
@@ -117,9 +109,6 @@ def load_grid_meta(path: Path):
     return grid_df
 
 
-# =========================
-# Helper functions
-# =========================
 def get_prediction_output(model, X: pd.DataFrame, threshold: float = 0.5):
     prob = float(model.predict_proba(X)[0, 1])
     pred = 1 if prob >= threshold else 0
@@ -459,9 +448,7 @@ def render_selected_cell_map(grid_df: pd.DataFrame, cell_id: str, input_lat=None
     )
 
 
-# =========================
-# App startup
-# =========================
+
 try:
     df = load_test_data(TEST_DATA_PATH)
     models = load_models()
@@ -471,9 +458,7 @@ except Exception as e:
     st.exception(e)
     st.stop()
 
-# =========================
-# Sidebar
-# =========================
+
 st.sidebar.header("Global Controls")
 
 selected_model_name = st.sidebar.selectbox(
@@ -504,28 +489,13 @@ show_dataset_preview = st.sidebar.checkbox("Show dataset preview", value=False)
 
 model = models[selected_model_name]
 
-# =========================
-# Overview
-# =========================
+
 st.subheader("Project Overview")
 st.write(
-    """
-This proof-of-concept application supports two input modes for selecting a target area:
-1. Choose a grid cell directly
-2. Input latitude and longitude to map to the nearest grid cell
 
-Once the target area and week are selected, the app automatically shows:
-- current-week prediction
-- a map of the selected cell and its surrounding cells
-- future multi-week risk outlook
-- selected feature snapshot
-- recent historical labels
-"""
 )
 
-# =========================
-# Unified Input Panel
-# =========================
+
 st.subheader("Input Panel")
 
 input_mode = st.radio(
@@ -570,9 +540,7 @@ else:
         else:
             st.error("Unable to map the input coordinates to a valid cell.")
 
-# =========================
-# Unified Week Selection
-# =========================
+
 if selected_cell is None:
     st.stop()
 
@@ -594,9 +562,7 @@ if row is None:
     st.warning("No matched record found for the selected cell and week.")
     st.stop()
 
-# =========================
-# Current Prediction
-# =========================
+
 st.subheader("Current Week Prediction")
 
 current_prob, current_pred = predict_for_row(model, row, threshold=threshold)
@@ -633,9 +599,7 @@ summary_df = pd.DataFrame(
 )
 st.dataframe(summary_df, use_container_width=True)
 
-# =========================
-# Map
-# =========================
+
 st.subheader("Selected Cell Map")
 
 if input_mode == "By Latitude / Longitude" and grid_meta is not None:
@@ -651,9 +615,7 @@ else:
         cell_id=selected_cell
     )
 
-# =========================
-# Future Risk Outlook
-# =========================
+
 st.subheader("Future Risk Outlook")
 
 forecast_df = run_forecast_table(
@@ -683,17 +645,13 @@ else:
     chart_df = forecast_df.copy().set_index("time_bin")[["predicted_probability"]]
     st.line_chart(chart_df)
 
-# =========================
-# Feature Snapshot
-# =========================
+
 if show_feature_table:
     st.subheader("Feature Snapshot")
     display_cols = list(dict.fromkeys(META_COLS + FEATURES))
     st.dataframe(row[display_cols], use_container_width=True)
 
-# =========================
-# Recent History
-# =========================
+
 if show_history_table:
     st.subheader("Recent Historical Labels")
     history_preview = (
@@ -703,16 +661,12 @@ if show_history_table:
     )
     st.dataframe(history_preview, use_container_width=True)
 
-# =========================
-# Optional dataset preview
-# =========================
+
 if show_dataset_preview:
     st.subheader("Dataset Preview")
     st.dataframe(df.head(20), use_container_width=True)
 
-# =========================
-# Footer
-# =========================
+
 st.markdown("---")
 st.caption(
     "This application is a proof-of-concept deployment for the IT5006 project. "
