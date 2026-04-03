@@ -1,20 +1,37 @@
-
 __pycache__/
 *.pyc
-.venv/
-data/
-models/
-*.parquet
 .DS_Store
 .ipynb_checkpoints/
 
-__pycache__/
-.ipynb_checkpoints/
 .venv/
 venv/
 env/
 
-# keep folder structure, ignore real data
+
+*.parquet
+*.pkl
+
+
+!data/processed/chicago_clean_2015_2024.parquet
+!data/processed/chicago_clean_2025.parquet
+!data/processed/grid_metadata.parquet
+!data/processed/train_table_test_2025.parquet
+!data/processed/train_table_train_2015_2024.parquet
+
+!data/raw/chicago_2015_2024.parquet
+!data/raw/chicago_2025.parquet
+
+
+!models/logreg_grid.pkl
+!models/xgb_grid_pipeline.pkl
+
+
+!data/
+!data/raw/
+!data/processed/
+!models/
+
+
 data/raw_zips/**
 !data/raw_zips/
 !data/raw_zips/.gitkeep
@@ -27,8 +44,8 @@ data/datasets/**
 !data/datasets/geographic/
 !data/datasets/geographic/.gitkeep
 
-data/processed/**
-!data/processed/
-!data/processed/.gitkeep
 
 !data/.gitkeep
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!models/.gitkeep
