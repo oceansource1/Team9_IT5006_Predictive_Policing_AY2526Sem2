@@ -655,9 +655,13 @@ if show_feature_table:
 if show_history_table:
     st.subheader("Recent Historical Labels")
     history_preview = (
-        df[df["cell_id"].astype(str) == str(selected_cell)][["cell_id", "time_bin", "y"]]
+        df[
+            (df["cell_id"].astype(str) == str(selected_cell)) &
+            (df["time_bin"] < pd.to_datetime(selected_week))
+        ][["cell_id", "time_bin", "y"]]
+        .sort_values("time_bin", ascending=False)
+        .head(12)
         .sort_values("time_bin")
-        .tail(12)
     )
     st.dataframe(history_preview, use_container_width=True)
 
